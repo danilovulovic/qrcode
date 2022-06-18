@@ -1,4 +1,6 @@
 qrcode[pil]
+qrcode
+pillow
 opencv-python
 imutils
 flask
