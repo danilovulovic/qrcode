@@ -1,6 +1,5 @@
-qrcode[pil]
-qrcode
-pillow
-opencv-python
-imutils
-flask
+qrcode[pil]>=7.3.1
+opencv-python>=4.6.0.66
+imutils>=0.5.4
+Pillow>=9.1.1
+Flask>=2.1.2
