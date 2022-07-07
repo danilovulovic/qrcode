@@ -8,6 +8,8 @@ from flask import *
 from tempfile import NamedTemporaryFile
 from shutil import copyfileobj
 from os import remove
+import time
+import numpy as np
 
 
 # Create a QR code with the given data, style (dark/light) and width (height is automatically calculated) (optional)
@@ -69,8 +71,34 @@ def makeqrcode(text, style, width=0):
         final = final.resize((width, int(width * final.size[1] / final.size[0])))
 
     # save the image as a in qr+randomname.png
-    name = "TESZT_TOCHANGE" #str(time.time())
+    name = str(time.time())
     final.save("./qrcode/qr" + name + ".png", "PNG")
+
+    # get the image
+    img = Image.open("./qrcode/qr" + name + ".png")
+    img = img.convert("RGBA")
+    datas = img.getdata()
+
+    newData = []
+    if style != "dark":
+        for item in datas:
+            if item[0] > 100 and item[1] > 100 and item[2] > 100:
+                newData.append((255, 255, 255, 0))
+            else:
+                newData.append(item)
+    else:
+        for item in datas:
+            if item[0] < 50 and item[1] < 50 and item[2] < 50:
+                newData.append((255,255,255, 0))
+            else:
+                newData.append(item)
+
+    img.putdata(newData)
+
+
+    # save the image
+    img.save("./qrcode/qr" + name + ".png", "PNG")
+
     return "./qrcode/qr" + name + ".png"
 
 
@@ -88,6 +116,8 @@ def request_page():
     # example request: http://localhost:5000/makeqr/?text=HelloWorld&style=dark&width=500
     # create the QR code
     name = makeqrcode(text, style, width)
+
+
     # make a temporary file to send the image
     tempfileobj = NamedTemporaryFile(mode='w+b', suffix='.png')
     pilImage = open(name, "rb")
