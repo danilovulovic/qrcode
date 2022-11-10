@@ -15,7 +15,7 @@ import numpy as np
 # Create a QR code with the given data, style (dark/light) and width (height is automatically calculated) (optional)
 def makeqrcode(text, style, width=0):
     qrcodesize = 1800
-    version = 4
+    version = 2
     bsize = qrcodesize // (17 + 4 * version)
 
     # create qr code
@@ -57,7 +57,7 @@ def makeqrcode(text, style, width=0):
     image = imutils.rotate_bound(image, 45)
 
     # add 50 px border to the image
-    image = cv2.copyMakeBorder(image, 34, 0, 243, 0, cv2.BORDER_CONSTANT, value=[0, 0, 0, 0])
+    image = cv2.copyMakeBorder(image, 0, 0, 230, 0, cv2.BORDER_CONSTANT, value=[0, 0, 0, 0])[10:]
 
     if style == "dark":
         final = Image.open("./samples/dark.png")
@@ -82,7 +82,8 @@ def makeqrcode(text, style, width=0):
     newData = []
     if style != "dark":
         for item in datas:
-            if item[0] > 100 and item[1] > 100 and item[2] > 100:
+            thr = 175
+            if item[0] > thr and item[1] > thr and item[2] > thr:
                 newData.append((255, 255, 255, 0))
             else:
                 newData.append(item)
