@@ -52,7 +52,9 @@ def makeqrcode(text, style, width=0):
     # if dark is True, make the image only white
     if style == "dark":
         image[image[:, :, 3] > 200] = [255, 255, 255, 255]
-
+    
+    image = imutils.resize(image, qrcodesize, qrcodesize)
+    
     # rotate the imgage by 45 degrees
     image = imutils.rotate_bound(image, 45)
 
