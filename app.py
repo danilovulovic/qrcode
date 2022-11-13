@@ -23,6 +23,7 @@ def makeqrcode(text, style, width=0):
         version=version,
         box_size=bsize,
         border=0,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
     )
     qr.add_data(text)
     img = qr.make_image(fill_color="white", back_color="red", image_factory=StyledPilImage,
